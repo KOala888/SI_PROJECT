@@ -76,7 +76,7 @@ public class App {
         }
         System.out.println("Ok: " + ok + "  Nieok: " + nieok + "   Wynik: " + (double)ok/(ok+nieok)*100.0 + "%");
         //nauka
-         for(int i=0; i<1000;i++){
+         for(int i=0; i<10000;i++){
             DaneWe.set(0,Rand.nextDouble() * 10.0 - 5.0);
             DaneWe.set(1,Rand.nextDouble() * 10.0 - 5.0);
             DaneWy.set(0,0.0);
@@ -92,7 +92,7 @@ public class App {
          //nauka skonczona
          ok=0;nieok=0;
          System.out.println("Po nauce");
-         for(int i=0; i<100000;i++){
+         for(int i=0; i<1000;i++){
             DaneWe.set(0,Rand.nextDouble() * 10.0 - 5.0);
             DaneWe.set(1,Rand.nextDouble() * 10.0 - 5.0);
             DaneWy.set(0,0.0);
