@@ -26,9 +26,7 @@ public class Logistic implements ActivationFunction{
     
     @Override
     public double calc(double input){
-        //.out.println(1/1+pow(E,-(beta*input)));
         return 1/(1+pow(E,-(beta*input)));
-
     }
     
     @Override

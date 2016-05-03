@@ -1,2 +1,0 @@
-Co dac na wejscie i wyjscie/a sieci, czy wyjsc ma byc tyle ile jezykow i aktywowane jest jedno 
-lub wiecej jesli siec rozpozna cechy z wiecej niz jednego jezyka?

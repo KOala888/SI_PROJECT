@@ -22,99 +22,86 @@ import pl.gda.pg.eti.sztuczna.inteligencja.Network.Connection;
  */
 public class App {
 
-    ArrayList<Double> DaneWe=new ArrayList(2);
-    ArrayList<Double> DaneWy=new ArrayList(2);
-    ArrayList<Double> WyjscieSieci=new ArrayList(2);
     Random Rand=new Random();
-
-    private void setTest(){
-        DaneWe.add(Rand.nextDouble() * 10.0 - 5.0);
-        DaneWe.add(Rand.nextDouble() * 10.0 - 5.0);
-        DaneWe.add(0.0);
-        DaneWe.add(1.0);
-        if (DaneWe.get(0) > 0.0)
-        {
-            DaneWy.set(0,1.0);
-            DaneWy.set(1,0.0);
-        }
-    }
     
     public static void main(String[] args) {
-        ArrayList<Double> DaneWe=new ArrayList(2);
-        ArrayList<Double> DaneWy=new ArrayList(2);
-        ArrayList<Double> WyjscieSieci=new ArrayList(2);
-        int ok,nieok;
+        ArrayList<Double> inputData=new ArrayList(2);
+        ArrayList<Double> outputData=new ArrayList(2);
+        ArrayList<Double> networkOutput=new ArrayList(2);
+        int ok,notOk;
         Random Rand=new Random();
         Network test=new Network(2,1,2,2,new Logistic());
         test.randomWeights(-1, 1, Rand);
         //addy inicjalizuja, potem trzeba setów uzywac bo to arraylist
-        DaneWe.add(Rand.nextDouble() * 10.0 - 5.0);
-        DaneWe.add(Rand.nextDouble() * 10.0 - 5.0);
-        DaneWy.add(0.0);
-        DaneWy.add(1.0);
-        ok=0;nieok=0;
+        inputData.add(Rand.nextDouble() * 10.0 - 5.0);
+        inputData.add(Rand.nextDouble() * 10.0 - 5.0);
+        outputData.add(0.0);
+        outputData.add(1.0);
+        ok=0;notOk=0;
         for(int i=0; i<1000;i++){
-            DaneWe.set(0,Rand.nextDouble() * 10.0 - 5.0);
-            DaneWe.set(1,Rand.nextDouble() * 10.0 - 5.0);
-            DaneWy.set(0,0.0);
-            DaneWy.set(1,1.0);
-            if (DaneWe.get(0) > DaneWe.get(1))
+            inputData.set(0,Rand.nextDouble() * 10.0 - 5.0);
+            inputData.set(1,Rand.nextDouble() * 10.0 - 5.0);
+            outputData.set(0,0.0);
+            outputData.set(1,1.0);
+            if (inputData.get(0) > inputData.get(1))
             {
-                DaneWy.set(0,1.0);
-                DaneWy.set(1,0.0);
+                outputData.set(0,1.0);
+                outputData.set(1,0.0);
             }
-            WyjscieSieci=test.calc(DaneWe);
-            if ((abs(WyjscieSieci.get(0) - DaneWy.get(0)) < 0.5) &&
-                    (abs(WyjscieSieci.get(1) - DaneWy.get(1)) < 0.5))
+            networkOutput=test.calc(inputData);
+            if ((abs(networkOutput.get(0) - outputData.get(0)) < 0.5) &&
+                    (abs(networkOutput.get(1) - outputData.get(1)) < 0.5))
                 {
                     ok++;
                 }
             else
                 {
-                    nieok++;
+                    notOk++;
                 }
         }
-        System.out.println("Ok: " + ok + "  Nieok: " + nieok + "   Wynik: " + (double)ok/(ok+nieok)*100.0 + "%");
+        System.out.println("Ok: " + ok + "  Nieok: " + notOk + "   Wynik: " + (double)ok/(ok+notOk)*100.0 + "%");
         //nauka
-         for(int i=0; i<10000;i++){
-            DaneWe.set(0,Rand.nextDouble() * 10.0 - 5.0);
-            DaneWe.set(1,Rand.nextDouble() * 10.0 - 5.0);
-            DaneWy.set(0,0.0);
-            DaneWy.set(1,1.0);
-            if (DaneWe.get(0) > DaneWe.get(1))
+         for(int i=0; i<10000000;i++){
+             //the more iterations and the smaller difference between example numers is
+             //the more precise the network will be
+            inputData.set(0,Rand.nextDouble()/10);
+            inputData.set(1,Rand.nextDouble()/10);
+            outputData.set(0,0.0);
+            outputData.set(1,1.0);
+            if (inputData.get(0) > inputData.get(1))
             {
-                DaneWy.set(0,1.0);
-                DaneWy.set(1,0.0);
+                outputData.set(0,1.0);
+                outputData.set(1,0.0);
             }
-            test.teachNetwork(DaneWy, DaneWe, 0.15);
-            WyjscieSieci=test.outputLayer.outputToArray();
+            test.teachNetwork(outputData, inputData, 0.15);
+            networkOutput=test.outputLayer.outputToArray();
         }
          //nauka skonczona
-         ok=0;nieok=0;
+         ok=0;notOk=0;
          System.out.println("Po nauce");
          for(int i=0; i<1000;i++){
-            DaneWe.set(0,Rand.nextDouble() * 10.0 - 5.0);
-            DaneWe.set(1,Rand.nextDouble() * 10.0 - 5.0);
-            DaneWy.set(0,0.0);
-            DaneWy.set(1,1.0);
-            if (DaneWe.get(0) > DaneWe.get(1))
+            inputData.set(0,Rand.nextDouble() * 10.0 - 5.0);
+            inputData.set(1,Rand.nextDouble() * 10.0 - 5.0);
+            outputData.set(0,0.0);
+            outputData.set(1,1.0);
+            if (inputData.get(0) > inputData.get(1))
             {
-                DaneWy.set(0,1.0);
-                DaneWy.set(1,0.0);
+                outputData.set(0,1.0);
+                outputData.set(1,0.0);
             }
-            WyjscieSieci=test.calc(DaneWe);
-            if ((abs(WyjscieSieci.get(0) - DaneWy.get(0)) < 0.5) &&
-                    (abs(WyjscieSieci.get(1) - DaneWy.get(1)) < 0.5))
+            networkOutput=test.calc(inputData);
+            if ((abs(networkOutput.get(0) - outputData.get(0)) < 0.5) &&
+                    (abs(networkOutput.get(1) - outputData.get(1)) < 0.5))
                 {
                     ok++;
                 }
             else
                 {
-                   nieok++;
+                   notOk++;
                 }
          
         }
-         System.out.println("Ok: " + ok + "  Nieok: " + nieok + "   Wynik: " + (double)ok/(ok+nieok)*100.0 + "%");
+         System.out.println("Ok: " + ok + "  Nieok: " + notOk + "   Wynik: " + (double)ok/(ok+notOk)*100.0 + "%");
          
     
     System.out.println("Custom liczby, 0 i 0 by zakonczyc");
@@ -124,20 +111,20 @@ public class App {
         double b=reader.nextDouble();
         if(a==b && a==0)
             break;
-        DaneWe.set(0,a);
-        DaneWe.set(1,b);
-        DaneWy.set(0,0.0);
-        DaneWy.set(1,1.0);
-        if (DaneWe.get(0) > DaneWe.get(1))
+        inputData.set(0,a);
+        inputData.set(1,b);
+        outputData.set(0,0.0);
+        outputData.set(1,1.0);
+        if (inputData.get(0) > inputData.get(1))
         {
-            DaneWy.set(0,1.0);
-            DaneWy.set(1,0.0);
+            outputData.set(0,1.0);
+            outputData.set(1,0.0);
         }
-        WyjscieSieci=test.calc(DaneWe);
-        System.out.println("Oczekiwana odpowiedz: " + DaneWy.get(0)+ "  " +DaneWy.get(1));
-        System.out.println("Otrzymana odpowiedz: " + WyjscieSieci.get(0)+ "  " +WyjscieSieci.get(1));
-        if ((abs(WyjscieSieci.get(0) - DaneWy.get(0)) < 0.5) &&
-                (abs(WyjscieSieci.get(1) - DaneWy.get(1)) < 0.5))
+        networkOutput=test.calc(inputData);
+        System.out.println("Oczekiwana odpowiedz: " + outputData.get(0)+ "  " +outputData.get(1));
+        System.out.println("Otrzymana odpowiedz: " + networkOutput.get(0)+ "  " +networkOutput.get(1));
+        if ((abs(networkOutput.get(0) - outputData.get(0)) < 0.5) &&
+                (abs(networkOutput.get(1) - outputData.get(1)) < 0.5))
             {
                 System.out.println("Ok");
             }

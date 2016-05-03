@@ -21,7 +21,6 @@ public class Neuron {
     public double error;
     
     public Neuron(ActivationFunction fx){
-        //try fx null?
         this.error=0;
         this.output=0;
         this.bias=0;
@@ -29,12 +28,11 @@ public class Neuron {
         this.activationFunction=fx;
     }
     
-    //do wejscia programu
+   
     public void AddInputs(Neuron n, double w){
-        //tez try z nullem
         input.add(new Connection(n,w));
     }
-    //do sieci
+    
     public void AddInputs(Layer l){
         for(Neuron n:l.neurons){
             AddInputs(n,1);
@@ -45,7 +43,6 @@ public class Neuron {
         for(Connection c: input){
             c.weight=r.nextDouble()*(max-min)+min;
         }
-        //necessary?
         bias=r.nextDouble()*(max-min)+min;
     }
     
@@ -59,26 +56,19 @@ public class Neuron {
     }
     
     public void calcError(double correctOutput){
-       // System.out.println(error);
-        //System.out.println(correctOutput);
-       // System.out.println(output);
         error=correctOutput-output;
-        //System.out.println(error);
     }
     
     public void correctWeights(double learningRate){
-        //System.out.println(error);
         for(Connection c: input){
             c.weight+=learningRate*error*activationFunction.calcDerivative(output)*c.neuron.output;
         }
         bias+=learningRate*error*activationFunction.calcDerivative(output);
     }
-    //backpropagation function
+    //backpropagation algorithm
     public void castErrorsBackwards(){
         for(Connection c: input){
-            //System.out.println("Przed "+c.neuron.error);
-            c.neuron.error+=this.error*c.weight;
-            //System.out.println("Por " +c.neuron.error);
+            c.neuron.error+=this.error*c.weight;;
         }
     }
 }

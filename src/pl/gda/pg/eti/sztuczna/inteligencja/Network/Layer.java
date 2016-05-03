@@ -35,7 +35,7 @@ public class Layer {
             n.randomWeights(min,max,r);
         }
     }
-    //poki co input dla sieci bedzie kolejna warstwa, w ktorej po prostu ustawimy odpowiednio outpu jak input
+    //so far, first layer (it's output) is treated like a network input
     public void setInput(ArrayList<Double> input){
         for(int i=0; i<neurons.size(); i++){
             neurons.get(i).output=input.get(i);
